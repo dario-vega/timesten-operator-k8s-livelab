@@ -7,6 +7,40 @@ that offers **unrivalled performance**, simple installation and management, and 
 It is well suited to running in containerized environments and, combined with the *TimesTen Kubernetes Operator*,
 provides a simple and robust solution for high performance, highly available data management in Kubernetes environments.
 
+**Oracle TimesTen In-Memory Database** (TimesTen) is a relational database that is memory-optimized for fast response and throughput.
+You can create one or more in-memory, SQL relational, ACID-complaint databases.
+The database resides entirely in memory at runtime and is persisted to the file system for the ability to recover and restart.
+
+* *Oracle TimesTen In-Memory Database in classic mode (TimesTen Classic)* is a memory-optimized relational database that provides
+applications with the responsiveness and high throughput. High availability for the in-memory database is provided through transactional replication.
+
+* *Cache* is ideal for caching performance-critical subsets of an Oracle database for improved response time in the application tier.
+Cache tables can be read-only or updatable. Applications read and update the cache tables using standard SQL,
+and data synchronization between the cache and the Oracle database is performed automatically.
+Cache offers applications the full generality and functionality of a relational database,
+the transparent maintenance of cache consistency with the Oracle database, and the high performance of an in-memory database.
+
+**Oracle TimesTen In-Memory Database Performance Overview**
+
+The TimesTen in-memory database delivers high performance by changing the assumptions about where data resides at runtime.
+The TimesTen in-memory database manages data in memory and optimizes data structures and access algorithms accordingly.
+Thus, database operations run with maximum efficiency, achieving dramatic gains in responsiveness and throughput,
+even compared with a fully cached, the file system-based relational database management system (RDBMS). 
+
+* Much of the work that is done by a conventional RDBMS is done under the assumption that data primarily resides on the file system.
+Optimization algorithms, buffer pool management, and indexed retrieval techniques are designed based on this fundamental assumption.
+
+* TimesTen is designed with the knowledge that data resides in main memory and can take more direct routes to data,
+reducing the length of the code path and simplifying algorithms and structure.
+
+* When the assumption of the file system is removed, complexity is dramatically reduced.
+The number of machine instructions drops, buffer pool management disappears, extra data copies are not needed,
+index pages shrink, and their structure is simplified. The design becomes simple and more compact, and requests are processed faster.
+The figure shows the simplicity of the TimesTen design.
+
+    ![Comparing a File System-Based RDBMS to TimesTen Classic](images/in-memory-architecture.png)
+
+
 The *TimesTen Operator* is designed for simple deployment of your active standby pairs of *TimesTen Classic databases*
 and for automated failure detection and recovery. For example,
 * You decide you want to deploy a new replicated pair of TimesTen databases.

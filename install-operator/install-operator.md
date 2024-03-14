@@ -125,15 +125,15 @@ supplying a name for the new container. In this example, the name of the contain
     </copy>
     ```
 
-The output is similar to the following.
+    The output is similar to the following.
 
-    Unable to find image container-registry.oracle.com/timesten/timesten:22.1.1.19.0 locally
-    Trying to pull repository container-registry.oracle.com/timesten/timesten:22.1.1.19.0 ...
-    20221215: Pulling from container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+        Unable to find image container-registry.oracle.com/timesten/timesten:22.1.1.19.0 locally
+        Trying to pull repository container-registry.oracle.com/timesten/timesten:22.1.1.19.0 ...
+        20221215: Pulling from container-registry.oracle.com/timesten/timesten:22.1.1.19.0
 
-    Digest: sha256:bb58e32d2e08a66c55fb09afd8958feb91300134fc7a019bcb39a241f48fd995
-    Status: Downloaded newer image for container-registry.oracle.com/timesten/timesten:22.1.1.19.0
-    d03a6e534e8bcce435b86795e8b3082487e5f18af64a522ebfbabff3baec321a
+        Digest: sha256:bb58e32d2e08a66c55fb09afd8958feb91300134fc7a019bcb39a241f48fd995
+        Status: Downloaded newer image for container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+        d03a6e534e8bcce435b86795e8b3082487e5f18af64a522ebfbabff3baec321a
 
 3. Copy the TimesTen Operator files from the ttoper container to the recently created kube_files/deploy.
 In addition, copy the helm directory from the ttoper container.
@@ -160,10 +160,12 @@ In addition, copy the helm directory from the ttoper container.
     ```
     <copy>
     docker image rm container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+    cd ..
     </copy>
     ```
 
-The output is similar to the following.
+    The output is similar to the following.
+
     ```
     Untagged: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
     ```
@@ -208,9 +210,8 @@ In addition, the TimesTen Operator provides TimesTen CRDs.
     The output is the following:
 
     ```
-    customresourcedefinition.apiextensions.k8s.io/
-    timestenclassics.timesten.oracle.com created
-    timestenscaleouts.timesten.oracle.com created
+    customresourcedefinition.apiextensions.k8s.io/timestenclassics.timesten.oracle.com created
+    customresourcedefinition.apiextensions.k8s.io/timestenscaleouts.timesten.oracle.com created
     ```
 
 3. Deploy the TimesTen Operator in the namespace of your Kubernetes cluster.
@@ -237,6 +238,10 @@ In addition, the TimesTen Operator provides TimesTen CRDs.
     ```shell
     NAME                                 READY   STATUS    RESTARTS   AGE
     timesten-operator-5c7558cd75-dfbd7   1/1     Running   0          13s
+    ```
+
+    ```
+    <copy>cd ../..</copy>
     ```
 
 The Database Kubernetes Operator has been installed.

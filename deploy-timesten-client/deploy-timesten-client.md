@@ -12,9 +12,9 @@ Estimated Time: 20 minutes
 * You have executed Lab 2: Install the Oracle Database Kubernetes Operator
 
 
-## Task 1: Create a TimesTenClassic Object
+## Task 1: Create a Client Object with the timesten client deployed
 
-This section creates the TimesTenClassic object.
+This section creates the TimesTen pod object.
 
 On your Linux development host:
 
@@ -34,10 +34,10 @@ On your Linux development host:
         name: client
     spec:
       imagePullSecrets:
-      - name: ocirsecret
+      - name: sekret
       initContainers:
       - name: init
-        image: iad.ocir.io/oradbclouducm/demos-tt/timesten/timesten:22.1.1.18.0
+        image: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
         imagePullPolicy: Always
         volumeMounts:
         - name: tt
@@ -51,7 +51,7 @@ On your Linux development host:
           EOF
       containers:
       - name: client
-        image: iad.ocir.io/oradbclouducm/demos-tt/timesten/timesten:22.1.1.18.0
+        image: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
         imagePullPolicy: Always
         volumeMounts:
         - name: tt
@@ -83,7 +83,13 @@ Doing so begins the process of deploying your active standby pair of TimesTen da
     <copy>kubectl create -f client.yaml</copy>
     timestenclassic.timesten.oracle.com/cachedb created
     ```
-3. Using a text editor, edit the sys.odbc.ini file so that the file from [ODBC Data Sources] onwards looks as follows
+3. Establish a shell in the Pod.
+
+    ```
+    <copy>kubectl exec -it client -c client -- /bin/bash</copy>
+    ```
+
+4. Using a text editor, edit the sys.odbc.ini file so that the file from [ODBC Data Sources] onwards looks as follows
     ```
     <copy>vi $TIMESTEN_HOME/conf/sys.odbc.ini</copy>
     ```
@@ -97,16 +103,16 @@ Doing so begins the process of deploying your active standby pair of TimesTen da
     </copy>
     ```
 
-4. Connect to the A/S pair database and verify that you have been automatically connected to the current active database.
+5. Connect to the A/S pair database and verify that you have been automatically connected to the current active database.
 
     ```
-    <copy>ttIsqlCS -connStr "DSN=mytimestendbCS;uid=appuser;pwd=samplepw"</copy>
+    <copy>ttIsqlCS -connStr "DSN=mytimestendbCS;uid=sampleuser;pwd=samplepw"</copy>
 
     Copyright (c) 1996, 2023, Oracle and/or its affiliates. All rights reserved.
     Type ? or "help" for help, type "exit" to quit ttIsql.
 
 
-    Enter password for 'appuser':
+    Enter password for 'sampleuser':
     Connection successful: DSN=mytimestendbCS;TTC_SERVER=mytimestendb-0.mytimestendb.default.svc.cluster.local;TTC_SERVER_DSN=mytimestendb;UID=appuser;DATASTORE=/tt/home/timesten/datastore/mytimestendb;DATABASECHARACTERSET=AL32UTF8;CONNECTIONCHARACTERSET=AL32UTF8;AUTOCREATE=0;PERMSIZE=200;DDLREPLICATIONLEVEL=3;FORCEDISCONNECTENABLED=1;
     (Default setting AutoCommit=1)
     Command>
@@ -114,6 +120,12 @@ Doing so begins the process of deploying your active standby pair of TimesTen da
     Command> ^DDisconnecting...
     Done.
     ```
+
+    ```
+    <copy>ttIsqlCS -connStr "DSN=mytimestendbCS;uid=appuser;pwd=samplepw"</copy>
+    ```
+6. exit from the `ttIsqlCS` command and from the `shell` command
+
 
 You may now **proceed to the next lab**.
 

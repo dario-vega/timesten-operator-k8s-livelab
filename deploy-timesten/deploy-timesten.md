@@ -166,15 +166,15 @@ On your Linux development host:
         name: mytimestendb
     spec:
         ttspec:
-    storageClassName: oci-bv
-    storageSize: 50Gi
-    image: iad.ocir.io/oradbclouducm/demos-tt/timesten/timesten:22.1.1.18.0
-    imagePullSecret: ocirsecret
-    cacheCleanup: false
-    dbConfigMap:
-    - mytimestendbconf
-    dbSecret:
-    - mysecret
+           storageClassName: oci-bv
+           storageSize: 50Gi
+           image: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+           imagePullSecret: sekret
+           cacheCleanup: false
+           dbConfigMap:
+           - mytimestendbconf
+           dbSecret:
+           - mysecret
     </copy>
     ```
 2. Use the kubectl create command to create the TimesTenClassic object from the contents of the YAML file.
@@ -184,6 +184,93 @@ Doing so begins the process of deploying your active standby pair of TimesTen da
     <copy>kubectl create -f mytimestendb.yaml</copy>
     timestenclassic.timesten.oracle.com/mytimestendb created
     ```
+
+
+
+## Task 4: Monitor the State of a TimesTenClassic Object
+
+Use the `kubectl get` and the `kubectl describe` commands to monitor the progress of the active standby pair as it is provisioned.
+
+1. Use the `kubectl get` command and review the STATE field. Observe the value is Initializing. The active standby pair provisioning has begun, but is not yet complete.
+
+    ```
+    <copy>kubectl get timestenclassic mytimestendb</copy>
+    ```
+
+2. Use the `kubectl describe` command to view the initial provisioning in detail.
+
+    ```
+    <copy>kubectl describe timestenclassic mytimestendb</copy>
+    ```
+
+3. Use the kubectl get command again to see if value of the STATE field has changed.
+In this example, the value is Normal, indicating the active standby pair of databases are now provisioned and the process is complete.
+
+    ```
+    <copy>kubectl get ttc mytimestendb</copy>
+
+    NAME           STATE    ACTIVE           AGE
+    mytimestendb   Normal   mytimestendb-0   3m25s
+    ```
+
+4. Use the kubectl describe command again to view the active standby pair provisioning in detail.
+
+    ```
+    <copy>kubectl describe timestenclassic mytimestendb</copy>
+    ```
+
+    Your active standby pair of *TimesTen* databases are successfully deployed (as indicated by `Normal`).
+
+    There are two TimesTen databases, configured as an active standby pair.
+    * One database is active. In this example, `mytimestendb-0` is the active database, as indicated by Rep State `ACTIVE`.
+    * The other database is standby. In this example, `mytimestendb-1` is the standby database as indicated by Rep State `STANDBY`.
+    The active database can be modified and queried. Changes made on the active database are replicated to the standby database.
+
+    If the active database fails, the *Operator* automatically promotes the standby database to be the active.
+    The formerly active database will be repaired or replaced, and will then become the standby.
+
+## Task 5: Verify Connection to Active Database
+
+You can run the `kubectl exec` command to invoke shells in your Pods and control *TimesTen*, which is running in those Pods.
+By default, TimesTen runs in the Pods as the `timesten` user. Once you have established a shell in the Pod, verify you can
+connect to the sample database, and that the information from the metadata files is correct.
+You can optionally run queries against the database or any other operations.
+
+1. Establish a shell in the Pod.
+
+    ```
+    <copy>kubectl exec -it mytimestendb-0 -c tt -- /bin/bash</copy>
+    ```
+
+2. Connect to the `mytimestendb` database. Attempt to connect to the database as the `sampleuser` user.
+Check that the `PermSize` value of 200 is correct. Check that the `sampleuser.emp` table exists.
+
+    ```
+    <copy>ttIsql mytimestendb</copy>
+
+    connect "DSN=mytimestendb";
+    Connection successful: DSN=mytimestendb;UID=timesten;DataStore=/tt/home/timesten/datastore/mytimestendb;DatabaseCharacterSet=AL32UTF8;ConnectionCharacterSet=US7ASCII;AutoCreate=0;PermSize=200;DDLReplicationLevel=3;ForceDisconnectEnabled=1;
+    (Default setting AutoCommit=1)
+    Command>
+    ```
+
+    ```
+    <copy>connect adding "uid=sampleuser;pwd=samplepw" as sampleuser;</copy>
+
+    Connection successful: DSN=mytimestendb;UID=sampleuser;DataStore=/tt/home/timesten/datastore/mytimestendb;DatabaseCharacterSet=AL32UTF8;ConnectionCharacterSet=US7ASCII;AutoCreate=0;PermSize=200;DDLReplicationLevel=3;ForceDisconnectEnabled=1;
+    (Default setting AutoCommit=1)
+    sampleuser: Command>
+    ```
+
+    ```
+    <copy>tables</copy>
+
+    SAMPLEUSER.EMP
+    1 table found.
+    sampleuser: Command>
+    ```
+3. exit from the `ttIsql` command and from the `shell` command
+
 
 
 You may now **proceed to the next lab**.
