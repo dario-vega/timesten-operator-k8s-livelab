@@ -121,9 +121,7 @@ Doing so begins the process of deploying your active standby pair of TimesTen da
     Done.
     ```
 
-    ```
-    <copy>ttIsqlCS -connStr "DSN=mytimestendbCS;uid=appuser;pwd=samplepw"</copy>
-    ```
+
 6. exit from the `ttIsqlCS` command and from the `shell` command
 
 

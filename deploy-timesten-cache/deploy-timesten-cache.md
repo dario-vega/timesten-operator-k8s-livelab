@@ -24,7 +24,6 @@ This example creates the cm_mycachedb subdirectory.
     ```
     <copy>
     mkdir -p cm_mycachedb
-    cd cm_mycachedb
     </copy>
     ```
 2. Navigate to the ConfigMap directory.
@@ -92,7 +91,10 @@ This example creates the cm_mycachedb subdirectory.
 7. Create the ConfigMap.
 
     ```  
-    <copy>kubectl create configmap mycacheconf --from-file=cm_mycachedb</copy>
+    <copy>
+    cd ..
+    kubectl create configmap mycacheconf --from-file=cm_mycachedb
+    </copy>
 
     configmap/mycacheconf created
     ```

@@ -58,7 +58,10 @@ This example creates the cm_mycachedb subdirectory.
 5. Create the ConfigMap.
 
     ```  
-    <copy>kubectl create configmap mytimestendbconf --from-file=cm_mytimestendb</copy>
+    <copy>
+    cd ..
+    kubectl create configmap mytimestendbconf --from-file=cm_mytimestendb
+    </copy>
 
     configmap/mytimestendbconf created
     ```
@@ -125,7 +128,10 @@ On your Linux development host:
 4. Create the Secret.
 
     ```  
-    <copy>kubectl create secret generic mysecret --from-file=secret_mysecret</copy>
+    <copy>
+    cd ..
+    kubectl create secret generic mysecret --from-file=secret_mysecret
+    </copy>
     secret/mysecret created
     ```
     You successfully created and deployed the mytimestendbconf ConfigMap.

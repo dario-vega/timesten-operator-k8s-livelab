@@ -62,7 +62,10 @@ This example creates the cm_tns subdirectory.
 5. Create the ConfigMap.
 
     ```  
-    <copy>kubectl create configmap tns --from-file=cm_tns</copy>
+    <copy>
+    cd ..
+    kubectl create configmap tns --from-file=cm_tns
+    </copy>
 
     configmap/tns created
     ```
@@ -188,7 +191,7 @@ This example creates the cm_tns subdirectory.
 required to create tables in the Oracle Database to be cached in your TimesTen database
     ```
     <copy>
-    CREATE USER oratt IDENTIFIED BY Oraclepwd##2020;
+    CREATE USER oratt IDENTIFIED BY Oraclepwd##2020 QUOTA UNLIMITED ON DATA;;
     GRANT CREATE SESSION, RESOURCE TO oratt;
 
     </copy>
