@@ -235,7 +235,33 @@ In this example, the value is Normal, indicating the active standby pair of data
     If the active database fails, the *Operator* automatically promotes the standby database to be the active.
     The formerly active database will be repaired or replaced, and will then become the standby.
 
-## Task 5: Verify Connection to Active Database
+## Task 5: Verify Underlying Objects Exist
+
+The Operator creates other underlying objects automatically. Verify that these objects are created.
+
+1. Use the `kubectl get` command to verify the objects of type StatefulSet created
+
+    ```
+    <copy>kubectl get statefulset  mytimestendb</copy>
+    ```
+
+2. Use the `kubectl get` command to verify the objects of type Service created
+
+    ```
+    <copy>kubectl get service  mytimestendb</copy>
+    ```
+3. Use the `kubectl get` command to verify the objects of type pod created
+
+    ```
+    <copy>kubectl get pods -l app=mytimestendb</copy>
+    ```
+
+4. Use the `kubectl get` command to verify the objects of type PersistentVolumeClaims (PVCs) created
+
+    ```
+    <copy>kubectl get pvc -l app=mytimestendb</copy>
+    ```
+## Task 6: Verify Connection to Active Database
 
 You can run the `kubectl exec` command to invoke shells in your Pods and control *TimesTen*, which is running in those Pods.
 By default, TimesTen runs in the Pods as the `timesten` user. Once you have established a shell in the Pod, verify you can
@@ -275,8 +301,51 @@ Check that the `PermSize` value of 200 is correct. Check that the `sampleuser.em
     1 table found.
     sampleuser: Command>
     ```
+
+    ```
+    <copy>
+    INSERT INTO sampleuser.emp VALUES (3,'Dario Vegas');
+    UPDATE emp SET name='Dario VEGA' WHERE id=3;
+    SELECT * FROM emp;
+    </copy>
+    ```
+
 3. exit from the `ttIsql` command and from the `shell` command
 
+4. execute the same commands using the pod `mytimestendb-1`
+
+## Task 7: Handle Failover and Recovery in TimesTen Classic
+
+The *Operator* automatically detects failures of the active TimesTen database and
+the standby TimesTen database and works to fix any failures. When the Operator
+detects a failure of the active database, it promotes the standby TimesTen database to be the active.
+Client/server applications that are using the database are automatically reconnected to the new active database.
+Transactions in flight are rolled back. Prepared statements need to be re-prepared by the applications.
+The Operator will configure a new standby database.
+
+This lab simulates a failure of the active TimesTen database.
+
+1. Use the `kubectl delete pod` command to delete the active database (mytimestendb-0 in this case)
+
+    ```
+    <copy>kubectl delete pod mytimestendb-0</copy>
+    ```
+
+2. Use the `kubectl describe` command to observe how the Operator recovers from the failure.
+The Operator promotes the standby database (`mytimestendb-1`) to be active. Any applications
+that were connected to the `mytimestendb-0` database are automatically reconnected to the `mytimestendb-1` database by TimesTen.
+After a brief outage, the applications can continue to use the database
+
+    ```
+    <copy>kubectl describe ttc mytimestendb</copy>
+    ```
+    ```
+    <copy>kubectl get Events  --field-selector involvedObject.name=mytimestendb</copy>
+    ```
+
+    Kubernetes has automatically respawned a new mytimestendb-0 Pod to replace the Pod you deleted.
+    The Operator configured TimesTen within that Pod, bringing the database in the Pod up as the new standby database.
+    The replicated pair of databases are once again functioning normally.
 
 
 You may now **proceed to the next lab**.
