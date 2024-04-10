@@ -179,7 +179,10 @@ On your Linux development host:
 4. Create the Secret.
 
     ```  
-    <copy>kubectl create secret generic mysecret --from-file=secret_mysecret</copy>
+    <copy>
+    cd ..
+    kubectl create secret generic mysecret --from-file=secret_mysecret
+    </copy>
     secret/mysecret created
     ```
     You successfully created and deployed the mytimestendbconf ConfigMap.
@@ -371,6 +374,12 @@ Then, insert a new row, delete an existing row, and update an existing row in th
     exit
     </copy>
     ```
+    ```
+    KEYVAL STR
+    ---------- --------------------------------
+         1 Hi
+         3 Welcome
+    ```
 
     Since the read-only cache group was created with an autorefresh interval of 5 seconds,
     the TimesTen oratt.readtab cache table in the readcache cache group is automatically
@@ -385,10 +394,16 @@ Query the TimesTen oratt.readtab table to verify that the table has been updated
     <copy>ttIsql cachedb</copy>
     ```
     ```
-    <copy>SELECT * FROM oratt.readtab;</copy>
+    <copy>
+    SELECT * FROM oratt.readtab;
+    exit
+    </copy>
+    ```
+    ```
+    < 1, Hi >
+    < 3, Welcome >
+    2 rows found.
 
-    < 1, Hello >
-    < 2, World >
     ```
 
 Now with **Perform Operations on the oratt.writetab Table**
@@ -409,8 +424,16 @@ if the data is not found in the TimeTen cache table.
     DELETE FROM oratt.writetab WHERE pk=101;
     UPDATE oratt.writetab SET attr='Oracle' WHERE pk=100;
     select * from oratt.writetab;
+    exit
     </copy>
     ```
+
+    ```
+    < 100, Oracle >
+    < 102, Cache >
+    2 rows found.
+    ```
+
     ```
     <copy>
     sqlplus oratt/Oraclepwd##2020@cache_high;
@@ -422,6 +445,13 @@ if the data is not found in the TimeTen cache table.
     SELECT * FROM oratt.writetab ORDER BY pk;
     exit
     </copy>
+    ```
+    ```
+    PK ATTR
+    ---------- ----------------------------------------
+    100 Oracle
+    102 Cache
+
     ```
 
 You may now **proceed to the next lab**.

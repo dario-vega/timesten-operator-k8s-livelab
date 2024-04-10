@@ -20,8 +20,7 @@ Estimated Time: 20 minutes
 
 ## Task 1: Create a ConfigMap Object for the Database Network configuration
 
-This section creates the sample ConfigMap. This ConfigMap contains the db.ini, the adminUser, and the schema.sql metadata files.
-This ConfigMap will be referenced when you define the TimesTenClassic object.
+This section creates the sample ConfigMap. This ConfigMap contains the tnsnames configuration if using a Oracle DB.
 
 On your Linux development host:
 
@@ -102,7 +101,14 @@ This example creates the cm_tns subdirectory.
 
 ## Task 2: Create the TimesTen cache administration Oracle Database Users
 
-1. Create a shell from which you can access your Oracle Database
+1. Use the kubectl create command to create the TimesTenClassic object from the contents of the YAML file.
+
+    ```
+    <copy>kubectl create -f client.yaml</copy>
+    pod/client created created
+    ```
+
+2. Create a shell from which you can access your Oracle Database
 
     ```
     <copy>
@@ -121,7 +127,7 @@ This example creates the cm_tns subdirectory.
 
 
 
-2. use SQL*Plus to connect to the Oracle Database as the sys or ADMIN user
+3. use SQL*Plus to connect to the Oracle Database as the sys or ADMIN user
 
     For non-Autonomous DB
     ```
@@ -136,7 +142,7 @@ This example creates the cm_tns subdirectory.
     </copy>
     ```
 
-3. Use the SQL*Plus session to create a default tablespace to store the TimesTen Cache management objects.
+4. Use the SQL*Plus session to create a default tablespace to store the TimesTen Cache management objects.
 
     For non-Autonomous DB
     ```
@@ -152,7 +158,7 @@ This example creates the cm_tns subdirectory.
     This error indicates that you are not allowed to run the SQL command in Autonomous Database.
     More [here](https://docs.oracle.com/en-us/iaas/autonomous-database-serverless/doc/autonomous-sql-commands.html)
 
-4. Use the SQL*Plus session to create the cache administration user
+5. Use the SQL*Plus session to create the cache administration user
 
     For non-Autonomous DB
     ```
@@ -171,7 +177,7 @@ This example creates the cm_tns subdirectory.
     </copy>
     ```
 
-5. Use the SQL*Plus session to Grant Privileges to the Cache Administration User
+6. Use the SQL*Plus session to Grant Privileges to the Cache Administration User
 
     ```
     <copy>
@@ -182,6 +188,7 @@ This example creates the cm_tns subdirectory.
     ```
     <copy>      
     @&oraclescriptspath./grantCacheAdminPrivileges.sql "cacheuser2"
+    SET FEED ON
     </copy>
     ```
 
@@ -191,7 +198,7 @@ This example creates the cm_tns subdirectory.
 required to create tables in the Oracle Database to be cached in your TimesTen database
     ```
     <copy>
-    CREATE USER oratt IDENTIFIED BY Oraclepwd##2020 QUOTA UNLIMITED ON DATA;;
+    CREATE USER oratt IDENTIFIED BY Oraclepwd##2020 QUOTA UNLIMITED ON DATA;
     GRANT CREATE SESSION, RESOURCE TO oratt;
 
     </copy>

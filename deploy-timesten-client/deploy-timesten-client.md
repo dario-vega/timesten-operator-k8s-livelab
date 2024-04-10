@@ -12,9 +12,74 @@ Estimated Time: 20 minutes
 * You have executed Lab 2: Install the Oracle Database Kubernetes Operator
 
 
-## Task 1: Create a Client Object with the timesten client deployed
+## Task 1: Create a ConfigMap Object for the Database Network configuration
 
-This section creates the TimesTen pod object.
+This section creates the sample ConfigMap. This ConfigMap contains the tnsnames configuration if using a Oracle DB.
+
+On your Linux development host:
+
+1. From the directory of your choice, create an empty subdirectory for the metadata files.
+This example creates the cm_tns subdirectory.
+
+    ```
+    <copy>mkdir -p cm_tns</copy>
+    ```
+2. Navigate to the ConfigMap directory.
+
+    ```
+    <copy>cd cm_tns</copy>
+    ```
+3. Create the sqlnet.ora file in this ConfigMap directory.
+    ```
+    <copy>vi sqlnet.ora</copy>
+    ```
+    ```
+    <copy>
+    NAME.DIRECTORY_PATH= {TNSNAMES, EZCONNECT, HOSTNAME}
+    SQLNET.EXPIRE_TIME = 10
+    SSL_VERSION = 1.2
+    </copy>
+    ```
+
+4. Create the ConfigMap.
+
+    ```  
+    <copy>
+    cd ..
+    kubectl create configmap tns --from-file=cm_tns
+    </copy>
+
+    configmap/tns created
+    ```
+    You successfully created and deployed the mytimestendbconf ConfigMap.
+
+5. Use the kubectl describe command to verify the contents of the ConfigMap.
+    ```
+    <copy>kubectl describe configmap tns</copy>
+
+    Name:         tns
+    Namespace:    default
+    Labels:       <none>
+    Annotations:  <none>
+
+    Data
+    ====
+    sqlnet.ora:
+    ----
+    NAME.DIRECTORY_PATH= {TNSNAMES, EZCONNECT, HOSTNAME}
+    SQLNET.EXPIRE_TIME = 10
+    SSL_VERSION = 1.2
+
+    BinaryData
+    ====
+
+    Events:  <none>
+
+    ```
+
+## Task 2: Create a Client Pod with the timesten client deployed
+
+This section creates the TimesTen pod object with the timesten client deployed.
 
 On your Linux development host:
 
@@ -65,7 +130,7 @@ On your Linux development host:
           /bin/bash <<'EOF'
           while [ 1 ]
           do
-              sleep 60
+              sleep 15
           done
           EOF
       volumes:
@@ -77,11 +142,10 @@ On your Linux development host:
     </copy>
     ```
 2. Use the kubectl create command to create the TimesTenClassic object from the contents of the YAML file.
-Doing so begins the process of deploying your active standby pair of TimesTen databases in the Kubernetes cluster.
 
     ```
     <copy>kubectl create -f client.yaml</copy>
-    timestenclassic.timesten.oracle.com/cachedb created
+    pod/client created created
     ```
 3. Establish a shell in the Pod.
 
@@ -103,7 +167,7 @@ Doing so begins the process of deploying your active standby pair of TimesTen da
     </copy>
     ```
 
-5. Connect to the A/S pair database and verify that you have been automatically connected to the current active database.
+5. Connect to the TimesTen database.
 
     ```
     <copy>ttIsqlCS -connStr "DSN=mytimestendbCS;uid=sampleuser;pwd=samplepw"</copy>
@@ -115,15 +179,42 @@ Doing so begins the process of deploying your active standby pair of TimesTen da
     Enter password for 'sampleuser':
     Connection successful: DSN=mytimestendbCS;TTC_SERVER=mytimestendb-0.mytimestendb.default.svc.cluster.local;TTC_SERVER_DSN=mytimestendb;UID=appuser;DATASTORE=/tt/home/timesten/datastore/mytimestendb;DATABASECHARACTERSET=AL32UTF8;CONNECTIONCHARACTERSET=AL32UTF8;AUTOCREATE=0;PERMSIZE=200;DDLREPLICATIONLEVEL=3;FORCEDISCONNECTENABLED=1;
     (Default setting AutoCommit=1)
-    Command>
-    Command>
-    Command> ^DDisconnecting...
-    Done.
+
     ```
 
+    ```
+    <copy>tables</copy>
+
+    SAMPLEUSER.EMP
+    1 table found.
+    sampleuser: Command>
+    ```
+
+    ```
+    <copy>
+    SELECT * FROM emp;
+    </copy>
+    ```
 
 6. exit from the `ttIsqlCS` command and from the `shell` command
 
+7. Delete the client pod.
+
+    ```
+    <copy>kubectl delete -f client.yaml</copy>
+    timestenclassic.timesten.oracle.com/cachedb created
+    ```
+
+8. Delete the ConfigMap.
+
+    ```  
+    <copy>
+    kubectl delete configmap tns
+    </copy>
+
+    configmap "tns" deleted
+    ```
+    You successfully created and deployed the mytimestendbconf ConfigMap.
 
 You may now **proceed to the next lab**.
 

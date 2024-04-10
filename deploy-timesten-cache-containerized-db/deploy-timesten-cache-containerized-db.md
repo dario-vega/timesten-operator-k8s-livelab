@@ -182,7 +182,9 @@ On your Linux development host:
 4. Create the Secret.
 
     ```  
-    <copy>kubectl create secret generic mysecret --from-file=secret_mysecret</copy>
+    <copy>
+    cd ..
+    kubectl create secret generic mysecret --from-file=secret_mysecret</copy>
     secret/mysecret created
     ```
     You successfully created and deployed the mytimestendbconf ConfigMap.
