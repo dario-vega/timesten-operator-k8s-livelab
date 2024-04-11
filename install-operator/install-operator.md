@@ -14,20 +14,19 @@ The active Operator manages all objects of a particular type and when combined w
 
 The TimesTen Kubernetes Operator consists of these interrelated components:
 
-- Custom Resource Definitions (CRDs): There are two CRDs. The TimesTenClassic CRD
-defines an object of type TimesTenClassic to Kubernetes. This TimesTenClassic
-object type provides the metadata for deploying active standby pairs of TimesTen Classic databases.
+- Custom Resource Definitions (CRDs): The TimesTenClassic CRD defines an object of type TimesTenClassic to Kubernetes.
+This TimesTenClassic object type provides the metadata for deploying active standby pairs of TimesTen Classic databases.
 
-- TimesTen Operator: There is one TimesTen Operator. The Operator monitors and handles the TimesTenClassic
-objects. It deploys, manages, and monitors active standby pairs of TimesTen Classic database.
+- TimesTen Operator: The Operator monitors and handles the TimesTenClassic objects.
+It deploys, manages, and monitors active standby pairs of TimesTen Classic database.
 
-- TimesTen Agent: There is one TimesTen agent. This agent runs inside each container that runs TimesTen.
+- TimesTen Agent: This agent runs inside each container that runs TimesTen.
 The TimesTen Operator communicates with these agents both to determine the state of
 TimesTen insides of the container as well as to create, start, stop, and control TimesTen instances.
 The agent does not know how to manage TimesTen. It gives information to the Operator and the Operator provides the instructions for the agent.
 This agent knows how to work with TimesTen Classic.
 
-This lab walks you through the steps to install the *TimesTen Kubernetes Operator* using the CLoud Shell.
+This lab walks you through the steps to install the *TimesTen Kubernetes Operator* using the Cloud Shell.
 
 Estimated Time: 15 minutes
 
@@ -64,7 +63,7 @@ before the *Continue* button and click *Continue*.
 then at the bottom of the page, click Accept.
 The Official container images for the Oracle TimesTen In-Memory Database page displays for a second time.
 To the right of the Quick Reference Description, look for a green check mark with text similar to the following:
-"You last accepted the Oracle Standard Terms and Restrictions on 01/08/2023 at 01:28 PM Coordinated Universal Time (UTC)."
+"You last accepted the Oracle Standard Terms and Restrictions on 12/12/2023 at 12:49 PM Coordinated Universal Time (UTC)."
 
    ![Image Details](images/image-details.png)
 
@@ -106,7 +105,7 @@ Let's walk through the steps to obtain the TimesTen Operator manifest files loca
 the `container-registry.oracle.com/timesten/timesten:22.1.1.19.0` container image.
 
 1. In the Cloud Shell, from the directory of your choice, create the subdirectories for the TimesTen Operator files.
-This example creates the kube_files and kube_files/deploy directories.
+This example creates the `kube_files` and `kube_files/deploy` directories.
 
     ```
     <copy>
@@ -135,8 +134,8 @@ supplying a name for the new container. In this example, the name of the contain
         Status: Downloaded newer image for container-registry.oracle.com/timesten/timesten:22.1.1.19.0
         d03a6e534e8bcce435b86795e8b3082487e5f18af64a522ebfbabff3baec321a
 
-3. Copy the TimesTen Operator files from the ttoper container to the recently created kube_files/deploy.
-In addition, copy the helm directory from the ttoper container.
+3. Copy the TimesTen Operator files from the ttoper container to the recently created `kube_files/deploy`.
+In addition, copy the `helm` directory from the ttoper container.
 ```
 
     <copy>
@@ -175,14 +174,14 @@ You successfully obtained the TimesTen Operator manifest files.
 
 ## Task 4: Install the operator
 
-The TimesTen Operator requires a Kubernetes service account in order to run properly. T
-his service account requires permissions and privileges in your namespace.
+The TimesTen Operator requires a Kubernetes service account in order to run properly.
+This service account requires permissions and privileges in your namespace.
 These permissions and privileges are granted through a role.
 The role is assigned to the service account through a role binding.
 In addition, the TimesTen Operator provides TimesTen CRDs.
 
 
-1. In Cloud Shell, change to the kube_files/deploy directory.:
+1. In Cloud Shell, change to the `kube_files/deploy` directory.:
 
     ```
     <copy>

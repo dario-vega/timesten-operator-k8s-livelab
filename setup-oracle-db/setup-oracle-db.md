@@ -20,12 +20,12 @@ Estimated Time: 20 minutes
 
 ## Task 1: Create a ConfigMap Object for the Database Network configuration
 
-This section creates the sample ConfigMap. This ConfigMap contains the tnsnames configuration if using a Oracle DB.
+This section creates the sample ConfigMap. This ConfigMap contains the tnsnames configuration of the Oracle DB.
 
 On your Linux development host:
 
 1. From the directory of your choice, create an empty subdirectory for the metadata files.
-This example creates the cm_tns subdirectory.
+This example creates the `cm_tns` subdirectory.
 
     ```
     <copy>mkdir -p cm_tns</copy>
@@ -68,7 +68,7 @@ This example creates the cm_tns subdirectory.
 
     configmap/tns created
     ```
-    You successfully created and deployed the mytimestendbconf ConfigMap.
+    You successfully created and deployed the `tns` ConfigMap.
 
 6. Use the kubectl describe command to verify the contents of the ConfigMap.
     ```

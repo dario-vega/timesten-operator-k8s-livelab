@@ -6,7 +6,7 @@
 Estimated Time: 20 minutes
 
 ### Objective
-* Create a database running on Kubernetes, using a block volume as persistency store
+* Create a client Pod running on Kubernetes, this Pod contains the TimesTen client installed.
 
 ### Prerequisites
 * You have executed Lab 2: Install the Oracle Database Kubernetes Operator
@@ -19,7 +19,7 @@ This section creates the sample ConfigMap. This ConfigMap contains the tnsnames 
 On your Linux development host:
 
 1. From the directory of your choice, create an empty subdirectory for the metadata files.
-This example creates the cm_tns subdirectory.
+This example creates the `cm_tns` subdirectory.
 
     ```
     <copy>mkdir -p cm_tns</copy>
@@ -51,7 +51,7 @@ This example creates the cm_tns subdirectory.
 
     configmap/tns created
     ```
-    You successfully created and deployed the mytimestendbconf ConfigMap.
+    You successfully created and deployed the `tns` ConfigMap.
 
 5. Use the kubectl describe command to verify the contents of the ConfigMap.
     ```
@@ -153,7 +153,7 @@ On your Linux development host:
     <copy>kubectl exec -it client -c client -- /bin/bash</copy>
     ```
 
-4. Using a text editor, edit the sys.odbc.ini file so that the file from [ODBC Data Sources] onwards looks as follows
+4. Using a text editor, edit the `sys.odbc.ini` file so that the file from [ODBC Data Sources] onwards looks as follows
     ```
     <copy>vi $TIMESTEN_HOME/conf/sys.odbc.ini</copy>
     ```
@@ -214,7 +214,6 @@ On your Linux development host:
 
     configmap "tns" deleted
     ```
-    You successfully created and deployed the mytimestendbconf ConfigMap.
 
 You may now **proceed to the next lab**.
 

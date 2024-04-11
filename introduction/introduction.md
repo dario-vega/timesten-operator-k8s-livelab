@@ -3,16 +3,16 @@
 ## About this Workshop
 
 *Oracle TimesTen In-Memory Database* is a lightweight, fully featured, relational in-memory database
-that offers **unrivalled performance**, simple installation and management, and high performance high-availability.
+that offers **unrivaled performance**, simple installation and management, and high performance and high-availability.
 It is well suited to running in containerized environments and, combined with the *TimesTen Kubernetes Operator*,
 provides a simple and robust solution for high performance, highly available data management in Kubernetes environments.
 
 **Oracle TimesTen In-Memory Database** (TimesTen) is a relational database that is memory-optimized for fast response and throughput.
 You can create one or more in-memory, SQL relational, ACID-complaint databases.
-The database resides entirely in memory at runtime and is persisted to the file system for the ability to recover and restart.
+The database resides entirely in memory at runtime and is persisted in the file system for the ability to recover and restart.
 
 * *Oracle TimesTen In-Memory Database in classic mode (TimesTen Classic)* is a memory-optimized relational database that provides
-applications with the responsiveness and high throughput. High availability for the in-memory database is provided through transactional replication.
+applications with responsiveness and high throughput. High availability for the in-memory database is provided through transactional replication.
 
 * *Cache* is ideal for caching performance-critical subsets of an Oracle database for improved response time in the application tier.
 Cache tables can be read-only or updatable. Applications read and update the cache tables using standard SQL,
@@ -25,7 +25,7 @@ the transparent maintenance of cache consistency with the Oracle database, and t
 The TimesTen in-memory database delivers high performance by changing the assumptions about where data resides at runtime.
 The TimesTen in-memory database manages data in memory and optimizes data structures and access algorithms accordingly.
 Thus, database operations run with maximum efficiency, achieving dramatic gains in responsiveness and throughput,
-even compared with a fully cached, the file system-based relational database management system (RDBMS). 
+even compared with a fully cached, the file system-based relational database management system (RDBMS).
 
 * Much of the work that is done by a conventional RDBMS is done under the assumption that data primarily resides on the file system.
 Optimization algorithms, buffer pool management, and indexed retrieval techniques are designed based on this fundamental assumption.
@@ -55,7 +55,7 @@ or re-duplicate a database after failure. **The TimesTen Operator performs all t
 to keep the databases up and running with minimal effort on your part**.
 
 This lab shows you how to deploy and run an *Oracle TimesTen* inside a Kubernetes
-cluster, using the *Oracle TimesTen In-Memory Database Kubernetes Operato*r.  
+cluster, using the *Oracle TimesTen In-Memory Database Kubernetes Operator*.  
 We will setup a *Container Engine for Kubernetes (OKE)* and deploy
 - Active Standby Pair
 - TimesTen Cache connected to Oracle Containerized Database.
@@ -67,7 +67,7 @@ We will setup a *Container Engine for Kubernetes (OKE)* and deploy
 * Set up a Container Engine for Kubernetes on the Oracle Cloud Infrastructure
 * Install the TimesTen Kubernetes Operator
 * Configure and launch a Timesten Database on Kubernetes
-* Configure and launch a Oracle Autonomous Database on Kubernetes
+* Configure and launch a Oracle Autonomous Database
 * Configure and launch a Timesten Cache Database on Kubernetes
 * Destroy the environments
 

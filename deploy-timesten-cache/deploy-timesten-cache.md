@@ -13,7 +13,7 @@ Estimated Time: 20 minutes
 
 ## Task 1: Create a ConfigMap Object
 
-This section creates the sample ConfigMap. This ConfigMap contains the db.ini, the adminUser, and the schema.sql metadata files.
+This section creates the sample ConfigMap. This ConfigMap contains the `db.ini`, the `adminUser`, and the `schema.sql` metadata files.
 This ConfigMap will be referenced when you define the TimesTenClassic object.
 
 On your Linux development host:
@@ -31,7 +31,8 @@ This example creates the cm_mycachedb subdirectory.
     ```
     <copy>cd cm_mycachedb</copy>
     ```
-3. Create the db.ini file in this ConfigMap directory (cm_sample, in this example). In this db.ini file, define the PermSize and DatabaseCharacterSet connection attributes.
+3. Create the `db.ini` file in this ConfigMap directory (cm_sample, in this example). In this `db.ini` file,
+define the PermSize, DatabaseCharacterSet and OracleNetServiceName connection attributes.
 
     ```
     <copy>vi db.ini</copy>
@@ -44,7 +45,7 @@ This example creates the cm_mycachedb subdirectory.
     </copy>
     ```
 
-4. Create the cacheuser file in this ConfigMap directory.
+4. Create the `cacheuser` file in this ConfigMap directory.
 
     ```
     <copy>vi cacheUser</copy>
@@ -54,7 +55,7 @@ This example creates the cm_mycachedb subdirectory.
     cacheuser2/ttpwd/Oraclepwd##2020
     </copy>
     ```
-5. Create the schema.sql file in this ConfigMap directory.
+5. Create the `schema.sql` file in this ConfigMap directory.
     ```
     <copy>vi schema.sql</copy>
     ```
@@ -70,7 +71,7 @@ This example creates the cm_mycachedb subdirectory.
     </copy>
     ```
 
-6. Create the schema.sql file in this ConfigMap directory.
+6. Create the `cachegroups.sql` file in this ConfigMap directory.
     ```
     <copy>vi cachegroups.sql</copy>
     ```
@@ -98,7 +99,7 @@ This example creates the cm_mycachedb subdirectory.
 
     configmap/mycacheconf created
     ```
-    You successfully created and deployed the mytimestendbconf ConfigMap.
+    You successfully created and deployed the `mycacheconf` ConfigMap.
 
 8. Use the kubectl describe command to verify the contents of the ConfigMap.
     ```
@@ -113,8 +114,8 @@ This example creates the cm_mycachedb subdirectory.
     ====
     schema.sql:
     ----
-    create sequence sampleuser.s;
-    create table sampleuser.emp (
+    create sequence appuser.s;
+    create table appuser.emp (
       id number not null primary key,
       name char(32)
     );
@@ -152,7 +153,7 @@ This example creates the cm_mycachedb subdirectory.
 
 ## Task 2: Create a Secret Object
 
-This section creates the sample Secret. This Secret contains the adminUser.
+This section creates the sample Secret. This Secret contains the `adminUser`.
 This Secret will be referenced when you define the TimesTenClassic object.
 
 On your Linux development host:
@@ -185,7 +186,7 @@ On your Linux development host:
     </copy>
     secret/mysecret created
     ```
-    You successfully created and deployed the mytimestendbconf ConfigMap.
+    You successfully created and deployed the `mysecret` Secret.
 
 5. Use the kubectl describe command to verify the contents of the Secret.
     ```
@@ -303,8 +304,8 @@ You can optionally run queries against the database or any other operations.
     <copy>kubectl exec -it cachedb-0 -c tt -- /bin/bash</copy>
     ```
 
-2. Connect to the `mytimestendb` database. Attempt to connect to the database as the `sampleuser` user.
-Check that the `PermSize` value of 200 is correct. Check that the `sampleuser.emp` table exists.
+2. Connect to the `mytimestendb` database. Check that the `PermSize` value of 200 is correct.
+Review the cache groups created and query the tables.
 
     ```
     <copy>ttIsql cachedb</copy>

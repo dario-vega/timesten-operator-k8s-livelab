@@ -43,26 +43,6 @@
             "filename": "../../deploy-timesten-cache/deploy-timesten-cache.md"
         },
         {
-            "title": "Lab 7: Install the Oracle Database Kubernetes Operator",
-            "description": "Oracle DB Operator installation into OKE.",
-            "filename": "../../install-db-operator/install-db-operator.md"
-        },
-        {
-            "title": "Lab 8: Deploy TimesTen Cache in TimesTen Classic and Oracle Containerized DB Example",
-            "description": "Deploy TimesTen Cache in TimesTen Classic and Oracle Containerized DB Example.",
-            "filename": "../../deploy-timesten-cache-containerized-db/deploy-timesten-cache-containerized-db.md"
-        },
-        {
-            "title": "Lab 9: Deploy TimesTen Cache in TimesTen Classic and Autonomous DB Example",
-            "description": "Deploy TimesTen Cache in TimesTen Classic and Autonomous DB Example.",
-            "filename": "../../deploy-timesten-cache-autonomous/deploy-timesten-cache-autonomous.md"
-        },
-        {
-            "title": "Lab 10: Deploy TimesTen Cache in TimesTen Classic and DBCS Example",
-            "description": "Deploy TimesTen Cache in TimesTen Classic and DBCS Example.",
-            "filename": "../../deploy-timesten-cache-dbcs/deploy-timesten-cache-dbcs.md"
-        },
-        {
             "title": "Need Help?",
             "description": "Solutions to Common Problems and Directions for Receiving Live Help",
             "filename": "https://oracle-livelabs.github.io/common/labs/need-help/need-help-livelabs.md"

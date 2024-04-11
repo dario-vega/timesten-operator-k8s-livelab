@@ -13,7 +13,7 @@ Estimated Time: 20 minutes
 
 ## Task 1: Create a ConfigMap Object
 
-This section creates the sample ConfigMap. This ConfigMap contains the db.ini, the adminUser, and the schema.sql metadata files.
+This section creates the sample ConfigMap. This ConfigMap contains the `db.ini`, the `adminUser`, and the `schema.sql` metadata files.
 This ConfigMap will be referenced when you define the TimesTenClassic object.
 
 On your Linux development host:
@@ -29,7 +29,7 @@ This example creates the cm_mycachedb subdirectory.
     ```
     <copy>cd cm_mytimestendb</copy>
     ```
-3. Create the db.ini file in this ConfigMap directory (cm_sample, in this example). In this db.ini file, define the PermSize and DatabaseCharacterSet connection attributes.
+3. Create the `db.ini` file in this ConfigMap directory. In this `db.ini` file, define the `PermSize` and `DatabaseCharacterSet` connection attributes.
 
     ```
     <copy>vi db.ini</copy>
@@ -41,7 +41,7 @@ This example creates the cm_mycachedb subdirectory.
     </copy>
     ```
 
-4. Create the schema.sql file in this ConfigMap directory.
+4. Create the `schema.sql` file in this ConfigMap directory.
     ```
     <copy>vi schema.sql</copy>
     ```
@@ -55,7 +55,7 @@ This example creates the cm_mycachedb subdirectory.
     </copy>
     ```
 
-5. Create the ConfigMap.
+5. Create the *ConfigMap*.
 
     ```  
     <copy>
@@ -101,12 +101,12 @@ This example creates the cm_mycachedb subdirectory.
 
 ## Task 2: Create a Secret Object
 
-This section creates the sample Secret. This Secret contains the adminUser.
+This section creates the sample Secret. This Secret contains the `adminUser`.
 This Secret will be referenced when you define the TimesTenClassic object.
 
 On your Linux development host:
 
-1. From the directory of your choice, create an empty subdirectory for the metadata files. This example creates the secret_mysecret subdirectory.
+1. From the directory of your choice, create an empty subdirectory for the metadata files. This example creates the `secret_mysecret` subdirectory.
 
     ```
     <copy>mkdir -p secret_mysecret</copy>
@@ -116,7 +116,7 @@ On your Linux development host:
     ```
     <copy>cd secret_mysecret</copy>
     ```
-3. Create the adminUser file in this directory.
+3. Create the `adminUser` file in this directory.
 
     ```
     <copy>vi adminUser</copy>
@@ -125,7 +125,7 @@ On your Linux development host:
     <copy>sampleuser/samplepw</copy>
     ```
 
-4. Create the Secret.
+4. Create the *Secret*.
 
     ```  
     <copy>
@@ -152,6 +152,7 @@ On your Linux development host:
     adminUser:  17 bytes
 
     ```
+
 ## Task 3: Create a TimesTenClassic Object
 
 This section creates the TimesTenClassic object.
@@ -250,7 +251,7 @@ The Operator creates other underlying objects automatically. Verify that these o
     ```
     <copy>kubectl get service  mytimestendb</copy>
     ```
-3. Use the `kubectl get` command to verify the objects of type pod created
+3. Use the `kubectl get` command to verify the objects of type Pod created
 
     ```
     <copy>kubectl get pods -l app=mytimestendb</copy>
@@ -325,7 +326,7 @@ The Operator will configure a new standby database.
 
 This lab simulates a failure of the active TimesTen database.
 
-1. Use the `kubectl delete pod` command to delete the active database (mytimestendb-0 in this case)
+1. Use the `kubectl delete pod` command to delete the active database (`mytimestendb-0` in this case)
 
     ```
     <copy>kubectl delete pod mytimestendb-0</copy>
@@ -343,7 +344,7 @@ After a brief outage, the applications can continue to use the database
     <copy>kubectl get Events  --field-selector involvedObject.name=mytimestendb</copy>
     ```
 
-    Kubernetes has automatically respawned a new mytimestendb-0 Pod to replace the Pod you deleted.
+    Kubernetes has automatically respawned a new `mytimestendb-0` Pod to replace the Pod you deleted.
     The Operator configured TimesTen within that Pod, bringing the database in the Pod up as the new standby database.
     The replicated pair of databases are once again functioning normally.
 
