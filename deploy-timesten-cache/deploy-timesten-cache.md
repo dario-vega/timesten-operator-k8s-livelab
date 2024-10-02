@@ -228,7 +228,7 @@ On your Linux development host:
       ttspec:
         storageClassName: oci-bv
         storageSize: 50Gi
-        image: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+        image: container-registry.oracle.com/timesten/timesten:latest
         imagePullSecret: sekret
         cacheCleanup: false
         dbConfigMap:

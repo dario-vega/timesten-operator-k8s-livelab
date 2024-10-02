@@ -102,7 +102,7 @@ On your Linux development host:
       - name: sekret
       initContainers:
       - name: init
-        image: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+        image: container-registry.oracle.com/timesten/timesten:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: tt
@@ -116,7 +116,7 @@ On your Linux development host:
           EOF
       containers:
       - name: client
-        image: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+        image: container-registry.oracle.com/timesten/timesten:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: tt

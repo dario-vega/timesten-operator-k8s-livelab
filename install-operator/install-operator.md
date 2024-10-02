@@ -82,18 +82,29 @@ In kubernetes we store these passwords in secrets.
     docker login container-registry.oracle.com
     </copy>
     ```
-
+    or
+    ```
+    <copy>
+    podman login container-registry.oracle.com
+    </copy>
+    ```
    You'll be prompted for your username and password, please enter your Oracle website username and password (**not** your OCI Cloud username !)
    If all goes well you'll get a `Login Succeeded` message.
 
 2. Now use the local config file to create the secret we'll pass to the operator:
+
     ```
     <copy>
     kubectl create secret generic sekret  --from-file=.dockerconfigjson=$HOME/.docker/config.json --type=kubernetes.io/dockerconfigjson
     </copy>
     ```
+    Please note we're assuming you are in the home directory of your cloud shell, if not please make sure to correct the path to the .docker directory accordingly.
 
-   Please note we're assuming you are in the home directory of your cloud shell, if not please make sure to correct the path to the .docker directory accordingly.
+    ```
+    <copy>
+    kubectl create secret generic sekret  --from-file=.dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type=kubernetes.io/dockerconfigjson
+    </copy>
+    ```
 
 
 ## Task 3: Obtain the TimesTen Operator Manifest Files from the Official TimesTen Image
@@ -102,7 +113,7 @@ The TimesTen Operator manifest files are included within the official TimesTen c
 In this example, the official TimesTen container image is located in the timesten repository on the Oracle Container Registry.
 
 Let's walk through the steps to obtain the TimesTen Operator manifest files located within
-the `container-registry.oracle.com/timesten/timesten:22.1.1.19.0` container image.
+the `container-registry.oracle.com/timesten/timesten:latest` container image.
 
 1. In the Cloud Shell, from the directory of your choice, create the subdirectories for the TimesTen Operator files.
 This example creates the `kube_files` and `kube_files/deploy` directories.
@@ -115,34 +126,48 @@ This example creates the `kube_files` and `kube_files/deploy` directories.
     </copy>
     ```
 
-2. Create a new container from the `container-registry.oracle.com/timesten/timesten:22.1.1.19.0` image,
+2. Create a new container from the `container-registry.oracle.com/timesten/timesten:latest` image,
 supplying a name for the new container. In this example, the name of the container is ttoper.
 
     ```
     <copy>
-    docker create --name ttoper container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+    docker create --name ttoper container-registry.oracle.com/timesten/timesten:latest
     </copy>
     ```
-
+    or
+    ```
+    <copy>
+    podman create --name ttoper container-registry.oracle.com/timesten/timesten:latest
+    </copy>
+    ```
     The output is similar to the following.
 
-        Unable to find image container-registry.oracle.com/timesten/timesten:22.1.1.19.0 locally
-        Trying to pull repository container-registry.oracle.com/timesten/timesten:22.1.1.19.0 ...
-        20221215: Pulling from container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+        Unable to find image container-registry.oracle.com/timesten/timesten:latest locally
+        Trying to pull repository container-registry.oracle.com/timesten/timesten:latest ...
+        20221215: Pulling from container-registry.oracle.com/timesten/timesten:latest
 
         Digest: sha256:bb58e32d2e08a66c55fb09afd8958feb91300134fc7a019bcb39a241f48fd995
-        Status: Downloaded newer image for container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+        Status: Downloaded newer image for container-registry.oracle.com/timesten/timesten:latest
         d03a6e534e8bcce435b86795e8b3082487e5f18af64a522ebfbabff3baec321a
 
 3. Copy the TimesTen Operator files from the ttoper container to the recently created `kube_files/deploy`.
 In addition, copy the `helm` directory from the ttoper container.
-```
 
+    ```
     <copy>
     docker cp ttoper:/timesten/operator/deploy/crd.yaml deploy/crd.yaml
     docker cp ttoper:/timesten/operator/deploy/operator.yaml deploy/operator.yaml
     docker cp ttoper:/timesten/operator/deploy/service_account.yaml deploy/service_account.yaml
     docker cp ttoper:/timesten/operator/helm .
+    </copy>
+    ```
+    or
+    ```
+    <copy>
+    podman cp ttoper:/timesten/operator/deploy/crd.yaml deploy/crd.yaml
+    podman cp ttoper:/timesten/operator/deploy/operator.yaml deploy/operator.yaml
+    podman cp ttoper:/timesten/operator/deploy/service_account.yaml deploy/service_account.yaml
+    podman cp ttoper:/timesten/operator/helm .
     </copy>
     ```
 4. Remove the ttoper container.
@@ -152,13 +177,26 @@ In addition, copy the `helm` directory from the ttoper container.
     docker rm ttoper
     </copy>
     ```
+    or
+    ```
+    <copy>
+    podman rm ttoper
+    </copy>
+    ```
 
 
 5. Remove the TimesTen container image.
 
     ```
     <copy>
-    docker image rm container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+    docker image rm container-registry.oracle.com/timesten/timesten:latest
+    cd ..
+    </copy>
+    ```
+    or
+    ```
+    <copy>
+    podman image rm container-registry.oracle.com/timesten/timesten:latest
     cd ..
     </copy>
     ```
@@ -166,7 +204,7 @@ In addition, copy the `helm` directory from the ttoper container.
     The output is similar to the following.
 
     ```
-    Untagged: container-registry.oracle.com/timesten/timesten:22.1.1.19.0
+    Untagged: container-registry.oracle.com/timesten/timesten:latest
     ```
 
 You successfully obtained the TimesTen Operator manifest files.
@@ -250,4 +288,4 @@ You may now **proceed to the next lab**.
 
 ## Acknowledgements
 * **Author** - Dario VEGA, February 2024
-* **Last Updated By/Date** - Dario VEGA, February 2024
+* **Last Updated By/Date** - Dario VEGA, November 2024
