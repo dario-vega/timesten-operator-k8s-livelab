@@ -215,8 +215,17 @@ On your Linux development host:
     configmap "tns" deleted
     ```
 
+9. Delete the files created.
+
+    ```
+    <copy>
+    rm client.yaml
+    rm -rf cm_tns
+    </copy>
+    ```
+
 You may now **proceed to the next lab**.
 
 ## Acknowledgements
 * **Author** - Dario VEGA, February 2024
-* **Last Updated By/Date** - Dario VEGA, February 2024
+* **Last Updated By/Date** - Dario VEGA, May 2025

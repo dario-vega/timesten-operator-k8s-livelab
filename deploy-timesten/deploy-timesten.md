@@ -167,7 +167,7 @@ On your Linux development host:
 
     ```
     <copy>
-    apiVersion: timesten.oracle.com/v1
+    apiVersion: timesten.oracle.com/v3
     kind: TimesTenClassic
     metadata:
         name: mytimestendb
@@ -177,6 +177,9 @@ On your Linux development host:
            storageSize: 50Gi
            image: container-registry.oracle.com/timesten/timesten:latest
            imagePullSecret: sekret
+           prometheus:
+             publish: false
+             createPodMonitors: false
            cacheCleanup: false
            dbConfigMap:
            - mytimestendbconf
@@ -353,4 +356,4 @@ You may now **proceed to the next lab**.
 
 ## Acknowledgements
 * **Author** - Dario VEGA, February 2024
-* **Last Updated By/Date** - Dario VEGA, February 2024
+* **Last Updated By/Date** - Dario VEGA, May 2025

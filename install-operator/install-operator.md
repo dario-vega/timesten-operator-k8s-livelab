@@ -121,8 +121,6 @@ This example creates the `kube_files` and `kube_files/deploy` directories.
     ```
     <copy>
     mkdir -p kube_files
-    cd kube_files
-    mkdir -p deploy
     </copy>
     ```
 
@@ -142,32 +140,28 @@ supplying a name for the new container. In this example, the name of the contain
     ```
     The output is similar to the following.
 
-        Unable to find image container-registry.oracle.com/timesten/timesten:latest locally
         Trying to pull repository container-registry.oracle.com/timesten/timesten:latest ...
-        20221215: Pulling from container-registry.oracle.com/timesten/timesten:latest
-
-        Digest: sha256:bb58e32d2e08a66c55fb09afd8958feb91300134fc7a019bcb39a241f48fd995
-        Status: Downloaded newer image for container-registry.oracle.com/timesten/timesten:latest
-        d03a6e534e8bcce435b86795e8b3082487e5f18af64a522ebfbabff3baec321a
+        Getting image source signatures
+        Copying blob 5eff01ced95a done   |
+        Copying blob 5bbe602bf283 done   |
+        Copying config 99b8a45c67 done   |
+        Writing manifest to image destination
+        a24ca593fedccfc44a680ce8c13868e76ef05837a787625b1b7c737bbfc1dc98
 
 3. Copy the TimesTen Operator files from the ttoper container to the recently created `kube_files/deploy`.
 In addition, copy the `helm` directory from the ttoper container.
 
     ```
     <copy>
-    docker cp ttoper:/timesten/operator/deploy/crd.yaml deploy/crd.yaml
-    docker cp ttoper:/timesten/operator/deploy/operator.yaml deploy/operator.yaml
-    docker cp ttoper:/timesten/operator/deploy/service_account.yaml deploy/service_account.yaml
-    docker cp ttoper:/timesten/operator/helm .
+    docker cp ttoper:/timesten/operator/deploy kube_files
+    docker cp ttoper:/timesten/operator/helm kube_files
     </copy>
     ```
     or
     ```
     <copy>
-    podman cp ttoper:/timesten/operator/deploy/crd.yaml deploy/crd.yaml
-    podman cp ttoper:/timesten/operator/deploy/operator.yaml deploy/operator.yaml
-    podman cp ttoper:/timesten/operator/deploy/service_account.yaml deploy/service_account.yaml
-    podman cp ttoper:/timesten/operator/helm .
+    podman cp ttoper:/timesten/operator/deploy kube_files
+    podman cp ttoper:/timesten/operator/helm kube_files
     </copy>
     ```
 4. Remove the ttoper container.
@@ -190,14 +184,12 @@ In addition, copy the `helm` directory from the ttoper container.
     ```
     <copy>
     docker image rm container-registry.oracle.com/timesten/timesten:latest
-    cd ..
     </copy>
     ```
     or
     ```
     <copy>
     podman image rm container-registry.oracle.com/timesten/timesten:latest
-    cd ..
     </copy>
     ```
 
@@ -224,34 +216,46 @@ In addition, the TimesTen Operator provides TimesTen CRDs.
     ```
     <copy>
     cd kube_files/deploy
-    kubectl create -f service_account.yaml
+    kubectl create -f crd.yaml
     </copy>
     ```
 
     The resulting output should have no error messages and end like below:
 
     ```shell
-    role.rbac.authorization.k8s.io/timesten-operator created
-    serviceaccount/timesten-operator created
-    rolebinding.rbac.authorization.k8s.io/timesten-operator created
+    customresourcedefinition.apiextensions.k8s.io/timestenclassics.timesten.oracle.com created
     ```
 
 
 
-2. Create the TimesTen CRDs.
+2. Install the required service account, role, and role binding.
 
     ```
-    <copy>kubectl create -f crd.yaml</copy>
+    <copy>kubectl create -f service_account.yaml</copy>
     ```
 
     The output is the following:
 
     ```
-    customresourcedefinition.apiextensions.k8s.io/timestenclassics.timesten.oracle.com created
-    customresourcedefinition.apiextensions.k8s.io/timestenscaleouts.timesten.oracle.com created
+    role.rbac.authorization.k8s.io/timesten-operator created
+    serviceaccount/timesten-operator created
+    rolebinding.rbac.authorization.k8s.io/timesten-operator created
     ```
 
-3. Deploy the TimesTen Operator in the namespace of your Kubernetes cluster.
+3. Install the `service_account_cluster.yaml` YAML file by doing the following:
+
+    Use a text editor to modify the `service_account_cluster.yaml` file. Locate #namespace, remove #, and replace <namespace> with the name of your namespace (default, in this example).
+    ```
+    <copy>kubectl create -f service_account_cluster.yaml</copy>
+    ```
+
+    The output is the following:
+    ```
+    clusterrole.rbac.authorization.k8s.io/timesten-operator created
+    clusterrolebinding.rbac.authorization.k8s.io/timesten-operator created
+    ```
+
+4. Deploy the TimesTen Operator in the namespace of your Kubernetes cluster.
 
     ```
     <copy>kubectl create -f operator.yaml</copy>
@@ -288,4 +292,4 @@ You may now **proceed to the next lab**.
 
 ## Acknowledgements
 * **Author** - Dario VEGA, February 2024
-* **Last Updated By/Date** - Dario VEGA, November 2024
+* **Last Updated By/Date** - Dario VEGA, May 2025

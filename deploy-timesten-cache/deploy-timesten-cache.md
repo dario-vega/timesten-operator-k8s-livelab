@@ -220,7 +220,7 @@ On your Linux development host:
 
     ```
     <copy>
-    apiVersion: timesten.oracle.com/v1
+    apiVersion: timesten.oracle.com/v3
     kind: TimesTenClassic
     metadata:
       name: cachedb
@@ -459,4 +459,4 @@ You may now **proceed to the next lab**.
 
 ## Acknowledgements
 * **Author** - Dario VEGA, February 2024
-* **Last Updated By/Date** - Dario VEGA, February 2024
+* **Last Updated By/Date** - Dario VEGA, May 2025
